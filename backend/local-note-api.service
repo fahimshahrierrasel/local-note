@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve local note
+After=network.target
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/home/pi/developer/local-note/backend
+Environment="PATH=/home/pi/developer/local-note/backend/venv/bin"
+ExecStart=/home/pi/developer/local-note/backend/venv/bin/gunicorn main:app --workers 4 --bind unix:local-note.sock -k uvicorn.workers.UvicornWorker
+
+[Install]
+WantedBy=multi-user.target
