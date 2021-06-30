@@ -1,3 +1,4 @@
+import uvicorn
 from typing import List
 from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
@@ -44,3 +45,7 @@ def read_tags(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
 @app.delete("/notes/{note_id}", status_code=200, tags=["notes"])
 def delete_note(note_id: int, db: Session = Depends(get_db)):
     crud.delete_note(db, note_id)
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="127.0.0.1", port=8001, log_level="info")
