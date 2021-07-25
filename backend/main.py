@@ -37,8 +37,8 @@ def create_tag(note: schemas.NoteCreate, db: Session = Depends(get_db)):
 
 
 @app.get("/notes", response_model=List[schemas.Note], tags=["notes"])
-def read_tags(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    notes = crud.get_notes(db, skip, limit)
+def read_tags(tag: str = '', skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    notes = crud.get_notes(db, tag, skip, limit)
     return notes
 
 

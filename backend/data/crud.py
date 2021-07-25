@@ -26,8 +26,12 @@ def create_note(db: Session, note: schemas.NoteCreate):
     return separate_tag(db_note)
 
 
-def get_notes(db: Session, skip: int = 0, limit: int = 10):
-    notes = db.query(models.Note).offset(skip).limit(limit).all()
+def get_notes(db: Session, tag: str = '', skip: int = 0, limit: int = 10):
+    if len(tag) > 0:
+        notes_query = db.query(models.Note).filter(models.Note.tags.like(f'%{tag}%'))
+    else:
+        notes_query = db.query(models.Note)
+    notes = notes_query.order_by(models.Note.created_at.desc()).offset(skip).limit(limit).all()
     update_note = list(map(separate_tag, notes))
     return update_note
 
